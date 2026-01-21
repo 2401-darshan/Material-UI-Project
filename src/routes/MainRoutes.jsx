@@ -3,8 +3,14 @@ import { lazy } from 'react';
 // project imports
 import Loadable from 'components/Loadable';
 import DashboardLayout from 'layout/Dashboard';
-import FacultyList from '../pages/faculty/faculty-list';
-import StudentList from '../pages/student/student-list';
+import Login from "../pages/Login";
+import Dashboard from "../pages/Dashboard";
+import Institutes from "../pages/Institutes";
+import Departments from "../pages/Departments";
+import Events from "../pages/Events";
+import AddInstitute from '../pages/Addinstitute';
+import AddEvent from '../pages/AddEvent';
+
 
 // render- Dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -16,6 +22,7 @@ const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
+
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -37,29 +44,35 @@ const MainRoutes = {
       ]
     },
     {
-      path: 'typography',
-      element: <Typography />
-    },
-    {
-      path: 'color',
-      element: <Color />
-    },
-    {
-      path: 'shadow',
-      element: <Shadow />
-    },
-    {
-      path: 'sampale-page',
+      path: 'sample-page',
       element: <SamplePage />
     },
     {
-      path: 'faculty-list',
-      element: <FacultyList />
+      path: 'institutes',
+      element: <Institutes />,
+
     },
     {
-      path: 'student-list',
-      element: <StudentList />
-    }
+      path: 'add-institute',
+      element: <AddInstitute />
+    },
+    {
+      path: 'departments',
+      element: <Departments />
+    },
+    {
+      path: 'events',
+      element: <Events />
+    },
+    {
+      path: 'add-event',
+      element: <AddEvent />
+    },
+    {
+      path: 'login',
+      element: <Login />
+    },
+
   ]
 };
 

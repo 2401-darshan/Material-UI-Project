@@ -1,13 +1,11 @@
-// material-ui
-import LinearProgress from '@mui/material/LinearProgress';
-import Box from '@mui/material/Box';
+import { CircularProgress, Box } from '@mui/material';
 
-// ==============================|| Loader ||============================== //
-
-export default function Loader() {
+const Loader = () => {
   return (
-    <Box sx={{ position: 'fixed', top: 0, left: 0, zIndex: 2001, width: 1 }}>
-      <LinearProgress color="primary" />
+    <Box display="flex" justifyContent="center" mt={4}>
+      <CircularProgress />
     </Box>
   );
-}
+};
+
+export default Loader;

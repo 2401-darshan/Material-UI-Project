@@ -22,20 +22,6 @@ const support = {
       icon: icons.ChromeOutlined
     },
     {
-      id: 'faculty-list',
-      title: 'Faculty List',
-      type: 'item',
-      url: '/faculty-list',
-      icon: icons.QuestionOutlined
-    },
-    {
-      id: 'student-list',
-      title: 'Student List',
-      type: 'item',
-      url: '/student-list',
-      icon: icons.QuestionOutlined
-    },
-    {
       id: 'documentation',
       title: 'Documentation',
       type: 'item',
@@ -43,6 +29,24 @@ const support = {
       icon: icons.QuestionOutlined,
       external: true,
       target: true
+    },
+    {
+      id: 'Departments',
+      title: 'Departments',
+      type: 'item',
+      url: '/departments',
+    },
+    {
+      id: 'Events',
+      title: 'Events',
+      type: 'item',
+      url: '/Events',
+    },
+    {
+      id: 'Institutes',
+      title: 'institutes',
+      type: 'item',
+      url: '/institutes',
     }
   ]
 };
