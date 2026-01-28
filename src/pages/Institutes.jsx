@@ -1,35 +1,27 @@
 import React, { useState } from "react";
+import {
+  Box, Button,
+  Dialog, DialogTitle, DialogContent, DialogActions,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Paper, TextField, Typography
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
+const rowsPerPage = 3;
 
-const Table = ({ data, columns }) => {
-  return (
-    <table
-      border="1"
-      cellPadding="10"
-      style={{ borderCollapse: "collapse", width: "100%" }}
-    >
-      <thead>
-        <tr>
-          {columns.map((col) => (
-            <th key={col.key}>{col.label}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item) => (
-          <tr key={item.id}>
-            {columns.map((col) => (
-              <td key={col.key}>{item[col.key]}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
+const initialInstitutes = [
+  { id: 1, name: "ABC Institute of Technology", location: "A-Block", type: "Engineering", established: 1995 },
+  { id: 2, name: "XYZ Institute of Science", location: "G-Block", type: "Science", established: 2001 },
+  { id: 3, name: "PQR College of Arts", location: "C-Block", type: "Arts", established: 1998 },
+  { id: 4, name: "LMN Institute of Commerce", location: "B-Block", type: "Commerce", established: 2005 },
+  { id: 5, name: "DEF University", location: "D-Block", type: "University", established: 1980 }
+];
 
+export default function Institutes() {
+  const [institutes, setInstitutes] = useState(initialInstitutes);
+  const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
 
-const Modal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
     name: "",
     location: "",
@@ -37,172 +29,91 @@ const Modal = ({ open, onClose, onSave }) => {
     established: ""
   });
 
-  if (!open) return null;
+  const totalPages = Math.ceil(institutes.length / rowsPerPage);
 
-  return (
-    <div style={styles.overlay}>
-      <div style={styles.modal}>
-        <h3>Add Institute</h3>
-
-        <input
-          placeholder="Name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-
-        <input
-          placeholder="Location"
-          value={form.location}
-          onChange={(e) => setForm({ ...form, location: e.target.value })}
-        />
-
-       
-        <select
-          value={form.type}
-          onChange={(e) => setForm({ ...form, type: e.target.value })}
-        >
-          <option value="">Select Type</option>
-          <option value="Engineering">Engineering</option>
-          <option value="Science">Science</option>
-          <option value="Management">Management</option>
-        </select>
-
-        <input
-          placeholder="Established Year"
-          value={form.established}
-          onChange={(e) => setForm({ ...form, established: e.target.value })}
-        />
-
-        <div style={{ marginTop: 10 }}>
-          <button onClick={() => onSave(form)}>Save</button>
-          <button onClick={onClose} style={{ marginLeft: 10 }}>
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
+  const paginatedData = institutes.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
   );
-};
 
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-const Toast = ({ message }) => {
-  return (
-    <div style={styles.toast}>
-      {message}
-    </div>
-  );
-};
-
-
-const Institutes = () => {
-  const [data, setData] = useState([
-    { id: 1, name: "ABC Institute of Technology", location: "A-Block", type: "Engineering", established: 1995 },
-    { id: 2, name: "XYZ Institute of Science", location: "G-Block", type: "Science", established: 2001 },
-    { id: 3, name: "PQR Institute", location: "H-Block", type: "Management", established: 2005 }
-  ]);
-
-  const [openModal, setOpenModal] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  
-  const itemsPerPage = 2;
-  const [page, setPage] = useState(1);
-
-  const start = (page - 1) * itemsPerPage;
-  const paginatedData = data.slice(start, start + itemsPerPage);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-
-  const columns = [
-    { label: "ID", key: "id" },
-    { label: "Name", key: "name" },
-    { label: "Location", key: "location" },
-    { label: "Type", key: "type" },
-    { label: "Established", key: "established" }
-  ];
-
-  const handleSave = (formData) => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setData([
-        ...data,
-        { id: data.length + 1, ...formData }
-      ]);
-
-      setLoading(false);
-      setOpenModal(false);
-      setShowToast(true);
-
-      setTimeout(() => setShowToast(false), 3000);
-    }, 1000);
+  const handleAddInstitute = () => {
+    setInstitutes([...institutes, { id: institutes.length + 1, ...form }]);
+    setForm({ name: "", location: "", type: "", established: "" });
+    setOpen(false);
+    setPage(totalPages);
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Institutes List</h2>
+    <Box p={4}>
+      {/* Header with Add Button */}
+      <Box display="flex" justifyContent="space-between" mb={3}>
+        <Typography variant="h5" fontWeight={600}>
+          Institutes
+        </Typography>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
+          Add Institute
+        </Button>
+      </Box>
 
-      <button onClick={() => setOpenModal(true)}>
-        Add Institute
-      </button>
+      {/* Table */}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Established</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell>{row.id}</TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.location}</TableCell>
+                <TableCell>{row.type}</TableCell>
+                <TableCell>{row.established}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      <br /><br />
-
-      {loading && <p>Loading...</p>}
-
-      <Table data={paginatedData} columns={columns} />
-
+      {/* Pagination (Events Style) */}
+            <Box display="flex" alignItems="center" gap={2} mt={3}>
+              <Button variant="outlined" size="small" disabled={page === 1} onClick={() => setPage(page - 1)}>
+                Prev
+              </Button>
       
-      <div style={{ marginTop: 10 }}>
-        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-          Prev
-        </button>
-        <span style={{ margin: "0 10px" }}>
-          Page {page} of {totalPages}
-        </span>
-        <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
-          Next
-        </button>
-      </div>
+              <Typography variant="body2">
+                Page {page} of {totalPages}
+              </Typography>
+      
+              <Button variant="outlined" size="small" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+                Next
+              </Button>
+            </Box>
 
-      <Modal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        onSave={handleSave}
-      />
-
-      {showToast && <Toast message="Institute added successfully!" />}
-    </div>
+      {/* Add Institute Dialog */}
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
+        <DialogTitle>Add Institute</DialogTitle>
+        <DialogContent>
+          <TextField fullWidth margin="dense" label="Institute Name" placeholder="eg. Darshan Institute of Engineering" name="name" onChange={handleChange} />
+          <TextField fullWidth margin="dense" label="Location" placeholder="eg. Rajkot" name="location" onChange={handleChange} />
+          <TextField fullWidth margin="dense" label="Type" placeholder="eg. University" name="type" onChange={handleChange} />
+          <TextField fullWidth margin="dense" label="Established Year" placeholder="eg. 1980" type="number" name="established" onChange={handleChange} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleAddInstitute}>Save</Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
-};
-
-
-const styles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "black"
-  },
-  modal: {
-    background: "white",
-    padding: 20,
-    width: 300,
-    margin: "100px auto",
-    display: "flex",
-    flexDirection: "column",
-    gap: 10
-  },
-  toast: {
-    position: "fixed",
-    top: 20,
-    right: 20,
-    background: "green",
-    color: "white",
-    padding: "10px 20px"
-  }
-};
-
-export default Institutes;
+}
