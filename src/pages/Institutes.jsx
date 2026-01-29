@@ -51,9 +51,16 @@ export default function Institutes() {
     <Box p={4}>
       {/* Header with Add Button */}
       <Box display="flex" justifyContent="space-between" mb={3}>
-        <Typography variant="h5" fontWeight={600}>
-          Institutes
-        </Typography>
+        <Box>
+          <Typography variant="h5" fontWeight={600}>
+            Institutes Management
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary">
+            Manage all university institutes and details
+          </Typography>
+        </Box>
+
         <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
           Add Institute
         </Button>

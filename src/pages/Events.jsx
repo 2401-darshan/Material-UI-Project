@@ -53,9 +53,16 @@ export default function Events() {
     <Box p={4}>
       {/* Header with Add Button */}
       <Box display="flex" justifyContent="space-between" mb={3}>
-        <Typography variant="h5" fontWeight={600}>
-          Events
-        </Typography>
+        <Box>
+          <Typography variant="h5" fontWeight={600}>
+            Events Management
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary">
+            Manage all university events and details
+          </Typography>
+        </Box>
+        
         <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
           Add Event
         </Button>
